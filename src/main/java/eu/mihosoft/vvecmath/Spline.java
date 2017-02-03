@@ -107,7 +107,11 @@ abstract class Spline {
 
     static class Cubic {
 
-        private double a, b, c, d;
+        private final double a;
+        private final double b;
+
+        private final double c;
+        private final double d;
 
         public Cubic(double a, double b, double c, double d) {
             this.a = a;
