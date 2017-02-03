@@ -1,0 +1,25 @@
+// -----------------------------------------------------------------------------
+// publishing information
+// -----------------------------------------------------------------------------
+ext.publishing.artifactId =  project.name.toLowerCase()
+ext.publishing.groupId    =  'eu.mihosoft.vvecmath'
+ext.publishing.versionId  =  '0.1'
+
+ext.publishing.developerName         = 'Michael Hoffer'
+ext.publishing.developerAlias        = 'miho'
+ext.publishing.developerEmail        = 'info@michaelhoffer.de'
+ext.publishing.inceptionYear         = '2017'
+
+ext.publishing.bintray.repo          = 'VVecMath'
+ext.publishing.bintray.userOrg       = 'miho'
+ext.publishing.bintray.name          = project.name
+
+ext.publishing.desc                  = 'VVecMath'
+ext.publishing.license               = 'BSD 2-Clause'
+ext.publishing.licenseUrl            = 'https://github.com/miho/VVecMath/blob/master/LICENSE'
+ext.publishing.labels                = ['vecmath', 'jcsg', 'vrl']
+ext.publishing.websiteUrl            = 'https://github.com/miho/VVecMath'
+ext.publishing.issueTrackerUrl       = 'https://github.com/miho/VVecMath/issues'
+ext.publishing.vcsUrl                = 'https://github.com/miho/VVecMath.git'
+
+ext.publishing.pomName               =  ext.publishing.artifactId
