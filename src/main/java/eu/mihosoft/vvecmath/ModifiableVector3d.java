@@ -57,17 +57,17 @@ public final class ModifiableVector3d extends Vector3dImpl {
     }
 
     @Override
-    void setX(double x) {
+    public void setX(double x) {
         super.setX(x);
     }
 
     @Override
-    void setY(double y) {
+    public void setY(double y) {
         super.setY(y);
     }
 
     @Override
-    void setZ(double z) {
+    public void setZ(double z) {
         super.setZ(z);
     }
 
