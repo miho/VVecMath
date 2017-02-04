@@ -3,7 +3,7 @@
 // -----------------------------------------------------------------------------
 ext.publishing.artifactId =  project.name.toLowerCase()
 ext.publishing.groupId    =  'eu.mihosoft.vvecmath'
-ext.publishing.versionId  =  '0.3.1'
+ext.publishing.versionId  =  '0.3.2'
 
 ext.publishing.developerName         = 'Michael Hoffer'
 ext.publishing.developerAlias        = 'miho'
