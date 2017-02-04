@@ -70,9 +70,9 @@ public class Plane {
      * distance to the origin.
      *
      * @param normal plane normal
-     * @param dist distance from origin
+     * @param dist distance to origin
      */
-    public Plane(Vector3d normal, double dist) {
+    private Plane(Vector3d normal, double dist) {
         this.normal = normal.normalized();
         this.dist = dist;
     }
@@ -85,9 +85,32 @@ public class Plane {
      * @param c third point
      * @return a plane
      */
-    public static Plane createFromPoints(Vector3d a, Vector3d b, Vector3d c) {
+    public static Plane fromPoints(Vector3d a, Vector3d b, Vector3d c) {
         Vector3d n = b.minus(a).cross(c.minus(a)).normalized();
         return new Plane(n, n.dot(a));
+    }
+
+    /**
+     * Creates an plane defined by an anchor point and a normal vector.
+     *
+     * @param p anchor point
+     * @param n normal
+     * @return a plane
+     */
+    public static Plane fromPointAndNormal(Vector3d p, Vector3d n) {
+        return new Plane(n, p.magnitude());
+    }
+
+    /**
+     * Creates an plane defined by the distance to the origin and a normal
+     * vector.
+     *
+     * @param dist distance to origin
+     * @param n normal
+     * @return a plane
+     */
+    public static Plane fromPointAndNormal(double dist, Vector3d n) {
+        return new Plane(n, dist);
     }
 
     @Override
@@ -103,11 +126,37 @@ public class Plane {
         dist = -dist;
     }
 
+    /**
+     * Return the distance of this plane to the origin.
+     *
+     * @return distance of this plane to the origin
+     */
     public double getDist() {
         return dist;
     }
-    
-    
 
-    
+    /**
+     * Projects the specified point onto this plane.
+     *
+     * @param p point to project
+     * @return projection of p onto this plane
+     */
+    public Vector3d project(Vector3d p) {
+
+        // dist:   the distance of this plane to the origin
+        // anchor: is the anchor point of the plane (closest point to origin)
+        // n:      the plane normal
+        //
+        // a) find anchor of plane
+        Vector3d anchor = normal.normalized().times(dist);
+
+        // b) project (p-anchor) onto n
+        Vector3d projV = normal.project(p.minus(anchor));
+
+        // c) subtract projection from p to get projP
+        Vector3d projP = p.minus(projV);
+
+        return projP;
+    }
+
 }

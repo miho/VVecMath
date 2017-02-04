@@ -437,4 +437,16 @@ public interface Vector3d {
     public static Vector3d clone(Vector3d source) {
         return new Vector3dImpl(source.x(), source.y(), source.z());
     }
+    
+    /**
+     * Projects the specified vector onto this vector.
+     * @param v vector to project onto this vector
+     * @return the projection of the specified vector onto this vector
+     */
+    public default Vector3d project(Vector3d v) {
+
+            double pScale = v.dot(this)/ this.magnitudeSq();
+            
+            return this.times(pScale);
+    }
 }
