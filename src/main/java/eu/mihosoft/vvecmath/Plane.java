@@ -109,7 +109,7 @@ public class Plane {
      * @param n normal
      * @return a plane
      */
-    public static Plane fromPointAndNormal(double dist, Vector3d n) {
+    public static Plane fromDistAndNormal(double dist, Vector3d n) {
         return new Plane(n, dist);
     }
 
