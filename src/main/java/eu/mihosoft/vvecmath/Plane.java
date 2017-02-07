@@ -158,5 +158,14 @@ public class Plane {
 
         return projP;
     }
+    
+    /**
+     * Returns the shortest distance between the specified point and this plane.
+     * @param p point
+     * @return the shortest distance between the specified point and this plane
+     */
+    public double distance(Vector3d p) {
+        return p.minus(project(p)).magnitude();
+    }
 
 }
