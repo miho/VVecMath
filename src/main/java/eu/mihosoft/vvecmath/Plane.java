@@ -167,5 +167,21 @@ public class Plane {
     public double distance(Vector3d p) {
         return p.minus(project(p)).magnitude();
     }
+    
+    /**
+     * Determines whether the specified point is in front of, in back of or on
+     * this plane.
+     * @param p point to check
+     * @param EPS tolerance
+     * @return {@code 1}, if p is in front of the plane,
+     *         {@code -1}, if the point is in the back of this plane and
+     *         {@code 0} if the point is on this plane
+     */
+    public int compare(Vector3d p, double EPS) {
+        double t = this.normal.dot(p) - this.dist; 
+        return (t < -EPS) ? -1 : (t > EPS) ? 1 : 0;
+    } 
 
 }
+
+
