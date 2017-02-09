@@ -354,9 +354,9 @@ public class Transform {
 
         System.err.println("WARNING: I'm too dumb to implement the mirror() operation correctly. Please fix me!");
 
-        double nx = plane.normal.x();
-        double ny = plane.normal.y();
-        double nz = plane.normal.z();
+        double nx = plane.getNormal().x();
+        double ny = plane.getNormal().y();
+        double nz = plane.getNormal().z();
         double w = plane.getDist();
         double elemenents[] = {
             (1.0 - 2.0 * nx * nx), (-2.0 * ny * nx), (-2.0 * nz * nx), 0,

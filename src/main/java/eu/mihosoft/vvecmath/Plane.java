@@ -46,35 +46,35 @@ public class Plane {
     /**
      * XY plane.
      */
-    public static final Plane XY_PLANE = new Plane(Vector3d.Z_ONE, 1);
+    public static final Plane XY_PLANE = new Plane(Vector3d.ZERO, Vector3d.Z_ONE);
     /**
      * XZ plane.
      */
-    public static final Plane XZ_PLANE = new Plane(Vector3d.Y_ONE, 1);
+    public static final Plane XZ_PLANE = new Plane(Vector3d.ZERO, Vector3d.Y_ONE);
     /**
      * YZ plane.
      */
-    public static final Plane YZ_PLANE = new Plane(Vector3d.X_ONE, 1);
+    public static final Plane YZ_PLANE = new Plane(Vector3d.ZERO, Vector3d.X_ONE);
 
     /**
      * Normal vector.
      */
-    public Vector3d normal;
+    private final Vector3d normal;
     /**
      * Distance to origin.
      */
-    private double dist;
+    private final Vector3d anchor;
 
     /**
-     * Constructor. Creates a new plane defined by its normal vector and the
-     * distance to the origin.
+     * Constructor. Creates a new plane defined by its normal vector and an
+     * anchor point
      *
      * @param normal plane normal
      * @param dist distance to origin
      */
-    private Plane(Vector3d normal, double dist) {
+    private Plane(Vector3d anchor, Vector3d normal) {
         this.normal = normal.normalized();
-        this.dist = dist;
+        this.anchor = anchor;
     }
 
     /**
@@ -87,7 +87,16 @@ public class Plane {
      */
     public static Plane fromPoints(Vector3d a, Vector3d b, Vector3d c) {
         Vector3d n = b.minus(a).cross(c.minus(a)).normalized();
-        return new Plane(n, n.dot(a));
+        
+        Vector3d center = Vector3d.zero();
+        
+        center=center.plus(a);
+        center=center.plus(b);
+        center=center.plus(c);
+        
+        center = center.times(1.0/3.0);
+        
+        return new Plane(n, center);
     }
 
     /**
@@ -98,32 +107,21 @@ public class Plane {
      * @return a plane
      */
     public static Plane fromPointAndNormal(Vector3d p, Vector3d n) {
-        return new Plane(n, p.magnitude());
+        return new Plane(p, n);
     }
 
-    /**
-     * Creates an plane defined by the distance to the origin and a normal
-     * vector.
-     *
-     * @param dist distance to origin
-     * @param n normal
-     * @return a plane
-     */
-    public static Plane fromDistAndNormal(double dist, Vector3d n) {
-        return new Plane(n, dist);
-    }
+
 
     @Override
     public Plane clone() {
-        return new Plane(normal.clone(), dist);
+        return new Plane(anchor, normal);
     }
 
     /**
-     * Flips this plane.
+     * Returns a flipped copy of this plane.
      */
-    public void flip() {
-        normal = normal.negated();
-        dist = -dist;
+    public Plane flipped() {
+        return new Plane(anchor, normal.negated());
     }
 
     /**
@@ -132,7 +130,21 @@ public class Plane {
      * @return distance of this plane to the origin
      */
     public double getDist() {
-        return dist;
+        return anchor.magnitude();
+    }
+    
+    /**
+     * Return the anchor point of this plane.
+     *
+     * @return anchor point of this plane
+     */
+    public Vector3d getAnchor() {
+        return anchor;
+    }
+
+    
+    public Vector3d getNormal() {
+        return normal;
     }
 
     /**
@@ -147,13 +159,11 @@ public class Plane {
         // anchor: is the anchor point of the plane (closest point to origin)
         // n:      the plane normal
         //
-        // a) find anchor of plane
-        Vector3d anchor = normal.normalized().times(dist);
 
-        // b) project (p-anchor) onto n
+        // a) project (p-anchor) onto n
         Vector3d projV = normal.project(p.minus(anchor));
 
-        // c) subtract projection from p to get projP
+        // b) subtract projection from p to get projP
         Vector3d projP = p.minus(projV);
 
         return projP;
@@ -178,7 +188,9 @@ public class Plane {
      *         {@code 0} if the point is on this plane
      */
     public int compare(Vector3d p, double EPS) {
-        double t = this.normal.dot(p) - this.dist; 
+        
+        // angle between vector n and vector (p-anchor)
+        double t = this.normal.dot(p.minus(anchor)); 
         return (t < -EPS) ? -1 : (t > EPS) ? 1 : 0;
     } 
 
