@@ -234,6 +234,55 @@ public interface Vector3d {
     Vector3d plus(Vector3d v);
 
     /**
+     * Returns the sum of this vector and the specified vector.
+     *
+     * @param x x coordinate of the vector to add
+     * @param y y coordinate of the vector to add
+     * @param z z coordinate of the vector to add
+     *
+     * <b>Note:</b> this vector is not modified.
+     *
+     * @return the sum of this vector and the specified vector
+     */
+    Vector3d plus(double x, double y, double z);
+
+    /**
+     * Returns the difference of this vector and the specified vector.
+     *
+     * @param x x coordinate of the vector to subtract
+     * @param y y coordinate of the vector to subtract
+     * @param z z coordinate of the vector to subtract
+     * 
+     * <b>Note:</b> this vector is not modified.
+     *
+     * @return the difference of this vector and the specified vector
+     */
+    Vector3d minus(double x, double y, double z);
+
+    /**
+     * Returns the product of this vector and the specified vector.
+     *
+     * @param x x coordinate of the vector to multiply
+     * @param y y coordinate of the vector to multiply
+     * @param z z coordinate of the vector to multiply
+     * 
+     * <b>Note:</b> this vector is not modified.
+     *
+     * @return the product of this vector and the specified vector
+     */
+    Vector3d times(double x, double y, double z);
+
+    /**
+     * Returns the distance between the specified point and this point.
+     *
+     * @param p point
+     * @return the distance between the specified point and this point
+     */
+    default double distance(Vector3d p) {
+        return minus(p).magnitude();
+    }
+
+    /**
      * Returns the product of this vector and the specified value.
      *
      * @param a the value
@@ -315,18 +364,21 @@ public interface Vector3d {
 
     /**
      * Returns the x component of this vector
+     *
      * @return x component of this vector
      */
     double x();
 
     /**
      * Returns the y component of this vector
+     *
      * @return y component of this vector
      */
     double y();
 
     /**
      * Returns the z component of this vector
+     *
      * @return z component of this vector
      */
     double z();
@@ -437,16 +489,17 @@ public interface Vector3d {
     public static Vector3d clone(Vector3d source) {
         return new Vector3dImpl(source.x(), source.y(), source.z());
     }
-    
+
     /**
      * Projects the specified vector onto this vector.
+     *
      * @param v vector to project onto this vector
      * @return the projection of the specified vector onto this vector
      */
     public default Vector3d project(Vector3d v) {
 
-            double pScale = v.dot(this)/ this.magnitudeSq();
-            
-            return this.times(pScale);
+        double pScale = v.dot(this) / this.magnitudeSq();
+
+        return this.times(pScale);
     }
 }

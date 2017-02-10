@@ -579,4 +579,19 @@ class Vector3dImpl implements Vector3d {
         return transform.transform(this.asModifiable());
     }
 
+    @Override
+    public Vector3d plus(double x, double y, double z) {
+        return Vector3d.xyz(this.x+x, this.y+y, this.z+z);
+    }
+
+    @Override
+    public Vector3d minus(double x, double y, double z) {
+        return Vector3d.xyz(this.x-x, this.y-y, this.z-z);
+    }
+
+    @Override
+    public Vector3d times(double x, double y, double z) {
+        return Vector3d.xyz(this.x*x, this.y*y, this.z*z);
+    }
+
 }
