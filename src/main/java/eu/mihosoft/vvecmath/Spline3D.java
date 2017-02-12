@@ -58,6 +58,7 @@ public final class Spline3D extends Spline {
     /**
      * Returns a point on the spline curve.
      * @param position position on the curve, range {@code [0, 1)}
+     * 
      * @return a point on the spline curve
      */
     public Vector3d getPoint(double position) {

@@ -42,10 +42,29 @@ package eu.mihosoft.vvecmath;
  */
 public interface Vector3d {
 
+    /**
+     * Unity vector {@code (1, 1, 1)}.
+     */
     Vector3d UNITY = new Vector3dImpl(1, 1, 1);
+
+    /**
+     * Vector {@code (1, 0, 0)}.
+     */
     Vector3d X_ONE = new Vector3dImpl(1, 0, 0);
+
+    /**
+     * Vector {@code (0, 1, 0)}.
+     */
     Vector3d Y_ONE = new Vector3dImpl(0, 1, 0);
+
+    /**
+     * Vector {@code (0, 0, 0)}.
+     */
     Vector3d ZERO = new Vector3dImpl(0, 0, 0);
+
+    /**
+     * Vector {@code (0, 0, 1)}.
+     */
     Vector3d Z_ONE = new Vector3dImpl(0, 0, 1);
 
     /**
@@ -252,7 +271,7 @@ public interface Vector3d {
      * @param x x coordinate of the vector to subtract
      * @param y y coordinate of the vector to subtract
      * @param z z coordinate of the vector to subtract
-     * 
+     *
      * <b>Note:</b> this vector is not modified.
      *
      * @return the difference of this vector and the specified vector
@@ -265,7 +284,7 @@ public interface Vector3d {
      * @param x x coordinate of the vector to multiply
      * @param y y coordinate of the vector to multiply
      * @param z z coordinate of the vector to multiply
-     * 
+     *
      * <b>Note:</b> this vector is not modified.
      *
      * @return the product of this vector and the specified vector

@@ -26,7 +26,9 @@ abstract class Spline {
      * @param coordIndex
      * @param cubicCollection
      */
-    public void calcNaturalCubic(List<Vector3d> valueCollection, int coordIndex, Collection<Cubic> cubicCollection) {
+    public void calcNaturalCubic(List<Vector3d> valueCollection, int coordIndex,
+            Collection<Cubic> cubicCollection) {
+        
         int num = valueCollection.size() - 1;
 
         double[] gamma = new double[num + 1];
@@ -88,11 +90,9 @@ abstract class Spline {
             )
             );
         }
-
     }
 
-    private double getByIndex(Object o, int index) {
-        Vector3d v = (Vector3d) o;
+    private double getByIndex(Vector3d v, int index) {;
         switch (index) {
             case 0:
                 return v.x();

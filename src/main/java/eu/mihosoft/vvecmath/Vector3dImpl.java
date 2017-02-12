@@ -391,13 +391,13 @@ class Vector3dImpl implements Vector3d {
             return false;
         }
         final Vector3d other = (Vector3d) obj;
-        if (abs(this.x - other.x()) > Plane.EPS) {
+        if (abs(this.x - other.x()) > Plane.TOL) {
             return false;
         }
-        if (abs(this.y - other.y()) > Plane.EPS) {
+        if (abs(this.y - other.y()) > Plane.TOL) {
             return false;
         }
-        if (abs(this.z - other.z()) > Plane.EPS) {
+        if (abs(this.z - other.z()) > Plane.TOL) {
             return false;
         }
         return true;

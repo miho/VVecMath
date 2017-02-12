@@ -198,9 +198,7 @@ public class Transform {
     }
 
     /**
-     * Applies a rotation operation with a specified rotation axis.
-     *
-     * <b> Note:</b> untested.
+     * Applies a rotation operation about the specified rotation axis.
      *
      * @param axisPos axis point
      * @param axisDir axis direction (may be unnormalized)

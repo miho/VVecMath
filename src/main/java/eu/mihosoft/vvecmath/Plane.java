@@ -41,7 +41,7 @@ package eu.mihosoft.vvecmath;
  */
 public class Plane {
 
-    public static final double EPS = 1e-12;
+    public static final double TOL = 1e-12;
 
     /**
      * XY plane.
@@ -118,6 +118,7 @@ public class Plane {
 
     /**
      * Returns a flipped copy of this plane.
+     * @return flipped coppy of this plane
      */
     public Plane flipped() {
         return new Plane(anchor, normal.negated());
@@ -141,6 +142,10 @@ public class Plane {
         return anchor;
     }
 
+    /**
+     * Returns the normal of this plane.
+     * @return the normal of this plane
+     */
     public Vector3d getNormal() {
         return normal;
     }
@@ -181,16 +186,33 @@ public class Plane {
      * this plane.
      *
      * @param p point to check
-     * @param EPS tolerance
+     * @param TOL tolerance
      * @return {@code 1}, if p is in front of the plane, {@code -1}, if the
      * point is in the back of this plane and {@code 0} if the point is on this
      * plane
      */
-    public int compare(Vector3d p, double EPS) {
+    public int compare(Vector3d p, double TOL) {
 
         // angle between vector n and vector (p-anchor)
         double t = this.normal.dot(p.minus(anchor));
-        return (t < -EPS) ? -1 : (t > EPS) ? 1 : 0;
+        return (t < -TOL) ? -1 : (t > TOL) ? 1 : 0;
+    }
+    
+    /**
+     * Determines whether the specified point is in front of, in back of or on
+     * this plane.
+     *
+     * @param p point to check
+     * 
+     * @return {@code 1}, if p is in front of the plane, {@code -1}, if the
+     * point is in the back of this plane and {@code 0} if the point is on this
+     * plane
+     */
+    public int compare(Vector3d p) {
+
+        // angle between vector n and vector (p-anchor)
+        double t = this.normal.dot(p.minus(anchor));
+        return (t < -TOL) ? -1 : (t > TOL) ? 1 : 0;
     }
 
 }
