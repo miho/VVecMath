@@ -678,6 +678,15 @@ public interface Vector3d {
         return new Vector3dImpl(0, 0, 0);
     }
 
+
+    /**
+     * Returns a clone of this vector.
+     *
+     * @return a clone of this vector
+     */
+    Vector3d clone();
+
+
     /**
      * Clones the specified vector.
      *
