@@ -182,7 +182,7 @@ public class Transform {
         Vector3d a = from.normalized();
         Vector3d b = to.normalized();
 
-        Vector3d c = a.cross(b);
+        Vector3d c = a.crossed(b);
 
         double l = c.magnitude(); // sine of angle
 

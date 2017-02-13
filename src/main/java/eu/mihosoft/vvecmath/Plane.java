@@ -87,7 +87,7 @@ public class Plane {
      * @return a plane
      */
     public static Plane fromPoints(Vector3d a, Vector3d b, Vector3d c) {
-        Vector3d n = b.minus(a).cross(c.minus(a)).normalized();
+        Vector3d n = b.minus(a).crossed(c.minus(a)).normalized();
 
         Vector3d center = Vector3d.zero();
 

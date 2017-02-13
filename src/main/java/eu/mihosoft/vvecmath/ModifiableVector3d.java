@@ -32,43 +32,208 @@
  * authors and should not be interpreted as representing official policies, either expressed
  * or implied, of Michael Hoffer <info@michaelhoffer.de>.
  */
-
 package eu.mihosoft.vvecmath;
 
 /**
  * Modifiable 3d vector.
- * 
+ *
  * @author Michael Hoffer (info@michaelhoffer.de)
  */
-public final class ModifiableVector3d extends Vector3dImpl {
+public interface ModifiableVector3d extends Vector3d {
 
-    ModifiableVector3d(double x, double y, double z) {
-        super(x, y, z);
+    Vector3d set(double... xyz);
+
+    Vector3d set(int i, double value);
+
+    default void setX(double x) {
+        set(0, x);
     }
 
-    @Override
-    public Vector3d set(double... xyz) {
-        return super.set(xyz);
+    default void setY(double y) {
+        set(1, y);
     }
 
-    @Override
-    public Vector3d set(int i, double value) {
-        return super.set(i, value);
+    default void setZ(double z) {
+        set(2, z);
     }
 
-    @Override
-    public void setX(double x) {
-        super.setX(x);
+    /**
+     * Adds the specified vector to this vector.
+     *
+     * @param v the vector to add
+     *
+     * <b>Note:</b> this vector <b>is</b> not modified.
+     *
+     * @return this vector
+     */
+    default Vector3d add(Vector3d v) {
+        this.setX(x() + v.x());
+        this.setY(y() + v.y());
+        this.setZ(z() + v.z());
+
+        return this;
     }
 
-    @Override
-    public void setY(double y) {
-        super.setY(y);
+    /**
+     * Adds the specified vector to this vector.
+     *
+     * @param x x coordinate of the vector to add
+     * @param y y coordinate of the vector to add
+     * @param z z coordinate of the vector to add
+     *
+     * <b>Note:</b> this vector <b>is</b> modified.
+     *
+     * @return this vector
+     */
+    default Vector3d add(double x, double y, double z) {
+        this.setX(x() + x);
+        this.setX(y() + y);
+        this.setX(z() + z);
+
+        return this;
     }
 
-    @Override
-    public void setZ(double z) {
-        super.setZ(z);
+    /**
+     * Subtracts the specified vector from this vector.
+     *
+     * <b>Note:</b> this vector <b>is</b> modified.
+     *
+     * @param v vector to subtract
+     * @return this vector
+     */
+    default Vector3d subtract(Vector3d v) {
+        this.setX(x() - v.x());
+        this.setY(y() - v.y());
+        this.setZ(z() - v.z());
+
+        return this;
+    }
+
+    /**
+     * Subtracts the specified vector from this vector.
+     *
+     * <b>Note:</b> this vector <b>is</b> modified.
+     *
+     * @param x x coordinate of the vector to subtract
+     * @param y y coordinate of the vector to subtract
+     * @param z z coordinate of the vector to subtract
+     * 
+     * @return this vector
+     */
+    default Vector3d subtract(double x, double y, double z) {
+        this.setX(x() - x);
+        this.setY(y() - y);
+        this.setZ(z() - z);
+
+        return this;
+    }
+
+    /**
+     * Multiplies this vector with the specified value.
+     *
+     * @param a the value
+     *
+     * <b>Note:</b> this vector <b>is</b> modified.
+     *
+     * @return this vector
+     */
+    default Vector3d multiply(double a) {
+        setX(x() * a);
+        setY(y() * a);
+        setZ(z() * a);
+
+        return this;
+    }
+
+    /**
+     * Multiplies this vector with the specified vector.
+     *
+     * @param a the vector
+     *
+     * <b>Note:</b> this vector <b>is</b> modified.
+     *
+     * @return this vector
+     */
+    default Vector3d multiply(Vector3d a) {
+        setX(x() * a.x());
+        setY(y() * a.y());
+        setZ(z() * a.z());
+
+        return this;
+    }
+
+    /**
+     * Devides this vector with the specified value.
+     *
+     * @param a the value
+     *
+     * <b>Note:</b> this vector <b>is</b> modified.
+     *
+     * @return this vector
+     */
+    default Vector3d divide(double a) {
+        setX(x() / a);
+        setY(y() / a);
+        setZ(z() / a);
+
+        return this;
+    }
+
+    /**
+     * Divides this vector with the specified vector.
+     *
+     * @param v the vector
+     *
+     * <b>Note:</b> this vector <b>is</b> modified.
+     *
+     * @return this vector
+     */
+    default Vector3d divide(Vector3d v) {
+        setX(x() / v.x());
+        setY(y() / v.y());
+        setZ(z() / v.z());
+
+        return this;
+    }
+
+    /**
+     * Stores the cross product of this vector and the specified vector in this
+     * vector.
+     *
+     * <b>Note:</b> this vector <b>is</b>modified.
+     *
+     * @param a the vector
+     *
+     * @return this vector
+     */
+    default Vector3d cross(Vector3d a) {
+        setX(this.y() * a.z() - this.z() * a.y());
+        setY(this.z() * a.x() - this.x() * a.z());
+        setZ(this.x() * a.y() - this.y() * a.x());
+
+        return this;
+    }
+
+    /**
+     * Negates this vector.
+     *
+     * <b>Note:</b> this vector <b>is</b> modified.
+     *
+     * @return this vector
+     */
+    default Vector3d negate() {
+        return multiply(-1.0);
+    }
+    
+    /**
+     * Normalizes this vector with length {@code 1}.
+     *
+     * <b>Note:</b> this vector <b>is</b> modified.
+     *
+     * @return this vector
+     */
+    default Vector3d normalize() {
+        return this.divide(this.magnitude());
     }
 
 }
