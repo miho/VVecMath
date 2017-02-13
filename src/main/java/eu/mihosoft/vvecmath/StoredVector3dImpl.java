@@ -95,6 +95,15 @@ public class StoredVector3dImpl implements ModifiableStoredVector3d {
     }
 
     @Override
+    public Vector3d clone() {
+        StoredVector3dImpl result = new StoredVector3dImpl();
+        result.setStorage(storage);
+        result.setOffset(offset);
+        result.setStride(stride);
+        return result;
+    }
+
+    @Override
     public int getOffset() {
         return offset;
     }
