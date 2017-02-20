@@ -96,6 +96,13 @@ class Vector3dImpl implements Vector3d {
     }
 
     Vector3d set(double... xyz) {
+        
+        if(xyz.length > 3) {
+            throw new IllegalArgumentException(
+                    "Wrong number of components. "
+                            + "Expected number of components <= 3, got: " + xyz.length);
+        }
+        
         for (int i = 0; i < xyz.length; i++) {
             set(i, xyz[i]);
         }

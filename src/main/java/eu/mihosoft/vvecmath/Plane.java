@@ -79,7 +79,7 @@ public class Plane {
 
     /**
      * Creates a plane defined by the the specified points. The anchor point of
-     * the plane id the centroid of the triangle (a,b,c).
+     * the plane is the centroid of the triangle (a,b,c).
      *
      * @param a first point
      * @param b second point
@@ -101,10 +101,10 @@ public class Plane {
     }
 
     /**
-     * Creates an plane defined by an anchor point and a normal vector.
+     * Creates a plane defined by an anchor point and a normal vector.
      *
      * @param p anchor point
-     * @param n normal
+     * @param n plane normal
      * @return a plane
      */
     public static Plane fromPointAndNormal(Vector3d p, Vector3d n) {

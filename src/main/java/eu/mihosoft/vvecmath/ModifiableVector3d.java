@@ -41,18 +41,46 @@ package eu.mihosoft.vvecmath;
  */
 public interface ModifiableVector3d extends Vector3d {
 
+    /**
+     * Sets the specified vector components.
+     *
+     * @param xyz vector components to set (number of components {@code <= 3} are valid)
+     * @return this vector
+     */
     Vector3d set(double... xyz);
 
+    /**
+     * Sets the i-th component of this vector.
+     *
+     * @param i component index
+     * @param value value to set
+     * @return this vector
+     */
     Vector3d set(int i, double value);
 
+    /**
+     * Sets the {@code x} component of this vector.
+     *
+     * @param x component to set
+     */
     default void setX(double x) {
         set(0, x);
     }
 
+    /**
+     * Sets the {@code y} component of this vector.
+     *
+     * @param y component to set
+     */
     default void setY(double y) {
         set(1, y);
     }
 
+    /**
+     * Sets the {@code z} component of this vector.
+     *
+     * @param z component to set
+     */
     default void setZ(double z) {
         set(2, z);
     }
@@ -117,7 +145,7 @@ public interface ModifiableVector3d extends Vector3d {
      * @param x x coordinate of the vector to subtract
      * @param y y coordinate of the vector to subtract
      * @param z z coordinate of the vector to subtract
-     * 
+     *
      * @return this vector
      */
     default Vector3d subtract(double x, double y, double z) {
@@ -224,7 +252,7 @@ public interface ModifiableVector3d extends Vector3d {
     default Vector3d negate() {
         return multiply(-1.0);
     }
-    
+
     /**
      * Normalizes this vector with length {@code 1}.
      *
