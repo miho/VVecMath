@@ -46,7 +46,7 @@ import static java.lang.Math.abs;
  * 
  * @author Michael Hoffer <info@michaelhoffer.de>
  */
-public class VectorUtilInternal {
+class VectorUtilInternal {
     
     public static String toString(Vector3d v) {
         return "[" + v.x() + ", " + v.y() + ", " + v.z() + "]";
