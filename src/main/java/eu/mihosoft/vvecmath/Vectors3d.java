@@ -92,7 +92,7 @@ public final class Vectors3d {
             throw new IllegalArgumentException("Number of specified values must be a multiple of 2!");
         }
 
-        return IntStream.range(1, xyValues.length)
+        return IntStream.range(1, xyValues.length).filter(i->(i+1)%2==0)
                 .mapToObj(i -> Vector3d.xy(xyValues[i - 1], xyValues[i])).
                 collect(Collectors.toList());
     }
@@ -109,7 +109,7 @@ public final class Vectors3d {
             throw new IllegalArgumentException("Number of specified values must be a multiple of 2!");
         }
 
-        return IntStream.range(1, xzValues.length)
+        return IntStream.range(1, xzValues.length).filter(i->(i+1)%2==0)
                 .mapToObj(i -> Vector3d.xz(xzValues[i - 1], xzValues[i])).
                 collect(Collectors.toList());
     }
@@ -126,7 +126,7 @@ public final class Vectors3d {
             throw new IllegalArgumentException("Number of specified values must be a multiple of 2!");
         }
 
-        return IntStream.range(1, yzValues.length)
+        return IntStream.range(1, yzValues.length).filter(i->(i+1)%2==0)
                 .mapToObj(i -> Vector3d.xy(yzValues[i - 1], yzValues[i])).
                 collect(Collectors.toList());
     }
@@ -143,7 +143,7 @@ public final class Vectors3d {
             throw new IllegalArgumentException("Number of specified values must be a multiple of 3!");
         }
 
-        return IntStream.range(2, xyzValues.length)
+        return IntStream.range(2, xyzValues.length).filter(i->(i+1)%3==0)
                 .mapToObj(i -> Vector3d.xyz(xyzValues[i - 2], xyzValues[i - 1], xyzValues[i])).
                 collect(Collectors.toList());
     }
