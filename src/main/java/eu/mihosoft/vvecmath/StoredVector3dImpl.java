@@ -32,76 +32,85 @@
  * authors and should not be interpreted as representing official policies, either expressed
  * or implied, of Michael Hoffer <info@michaelhoffer.de>.
  */
-
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package eu.mihosoft.vvecmath;
 
-import java.util.ArrayList;
-import java.util.List;
-
-
 /**
- * 3d Spline.
  * 
- * @author Michael Hoffer (info@michaelhoffer.de)
+ * @author Michael Hoffer <info@michaelhoffer.de>
  */
-public final class Spline3D extends Spline {
+public class StoredVector3dImpl implements ModifiableStoredVector3d {
+    
+    private double[] storage;
+    private int offset;
+    private int stride = 3;
 
-    private final List<Vector3d> points;
-
-    private final List<Cubic> xCubics;
-    private final List<Cubic> yCubics;
-    private final List<Cubic> zCubics;
-
-    /**
-     * Creates a new spline.
-     */
-    public Spline3D() {
-        this.points = new ArrayList<>();
-
-        this.xCubics = new ArrayList<>();
-        this.yCubics = new ArrayList<>();
-        this.zCubics = new ArrayList<>();
-
+    @Override
+    public void setStorage(double[] storage) {
+        this.storage = storage;
     }
 
-    /**
-     * Adds a control point to this spline.
-     * @param point point to add
-     */
-    public void addPoint(Vector3d point) {
-        this.points.add(point);
+    @Override
+    public void setOffset(int offset) {
+        this.offset = offset;
     }
 
-    /**
-     * Returns all control points.
-     * @return control points
-     */
-    public List<Vector3d> getPoints() {
-        return points;
+    @Override
+    public void setStride(int stride) {
+        this.stride = stride;
     }
 
-    /**
-     * Calculates this spline.
-     */
-    public void calcSpline() {
-        calcNaturalCubic(points, 0, xCubics);
-        calcNaturalCubic(points, 1, yCubics);
-        calcNaturalCubic(points, 2, zCubics);
+    @Override
+    public Vector3d set(double... xyz) {
+        for (int i = 0; i < xyz.length; i++) {
+            set(i, xyz[i]);
+        }
+        
+        return this;
     }
 
-    /**
-     * Returns a point on the spline curve.
-     * @param position position on the curve, range {@code [0, 1)}
-     * 
-     * @return a point on the spline curve
-     */
-    public Vector3d getPoint(double position) {
-        position = position * xCubics.size();
-        int cubicNum = (int) position;
-        double cubicPos = (position - cubicNum);
-
-        return Vector3d.xyz(xCubics.get(cubicNum).eval(cubicPos),
-                yCubics.get(cubicNum).eval(cubicPos),
-                zCubics.get(cubicNum).eval(cubicPos));
+    @Override
+    public Vector3d set(int i, double value) {
+        this.storage[offset*stride+i]=value;
+        return this;
     }
+
+    @Override
+    public double getX() {
+        return this.storage[offset*stride+0];
+    }
+
+    @Override
+    public double getY() {
+        return this.storage[offset*stride+1];
+    }
+
+    @Override
+    public double getZ() {
+        return this.storage[offset*stride+1];
+    }
+
+    @Override
+    public Vector3d clone() {
+        StoredVector3dImpl result = new StoredVector3dImpl();
+        result.setStorage(storage);
+        result.setOffset(offset);
+        result.setStride(stride);
+        return result;
+    }
+
+    @Override
+    public int getOffset() {
+        return offset;
+    }
+
+    @Override
+    public int getStride() {
+        return stride;
+    }
+   
 }

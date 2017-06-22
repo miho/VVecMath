@@ -41,7 +41,7 @@ package eu.mihosoft.vvecmath;
  */
 public class Plane {
 
-    public static final double EPS = 1e-12;
+    public static final double TOL = 1e-12;
 
     /**
      * XY plane.
@@ -78,7 +78,8 @@ public class Plane {
     }
 
     /**
-     * Creates a plane defined by the the specified points.
+     * Creates a plane defined by the the specified points. The anchor point of
+     * the plane is the centroid of the triangle (a,b,c).
      *
      * @param a first point
      * @param b second point
@@ -86,31 +87,29 @@ public class Plane {
      * @return a plane
      */
     public static Plane fromPoints(Vector3d a, Vector3d b, Vector3d c) {
-        Vector3d n = b.minus(a).cross(c.minus(a)).normalized();
-        
+        Vector3d n = b.minus(a).crossed(c.minus(a)).normalized();
+
         Vector3d center = Vector3d.zero();
-        
-        center=center.plus(a);
-        center=center.plus(b);
-        center=center.plus(c);
-        
-        center = center.times(1.0/3.0);
-        
+
+        center = center.plus(a);
+        center = center.plus(b);
+        center = center.plus(c);
+
+        center = center.times(1.0 / 3.0);
+
         return new Plane(n, center);
     }
 
     /**
-     * Creates an plane defined by an anchor point and a normal vector.
+     * Creates a plane defined by an anchor point and a normal vector.
      *
      * @param p anchor point
-     * @param n normal
+     * @param n plane normal
      * @return a plane
      */
     public static Plane fromPointAndNormal(Vector3d p, Vector3d n) {
         return new Plane(p, n);
     }
-
-
 
     @Override
     public Plane clone() {
@@ -119,6 +118,7 @@ public class Plane {
 
     /**
      * Returns a flipped copy of this plane.
+     * @return flipped coppy of this plane
      */
     public Plane flipped() {
         return new Plane(anchor, normal.negated());
@@ -132,7 +132,7 @@ public class Plane {
     public double getDist() {
         return anchor.magnitude();
     }
-    
+
     /**
      * Return the anchor point of this plane.
      *
@@ -142,7 +142,10 @@ public class Plane {
         return anchor;
     }
 
-    
+    /**
+     * Returns the normal of this plane.
+     * @return the normal of this plane
+     */
     public Vector3d getNormal() {
         return normal;
     }
@@ -159,7 +162,6 @@ public class Plane {
         // anchor: is the anchor point of the plane (closest point to origin)
         // n:      the plane normal
         //
-
         // a) project (p-anchor) onto n
         Vector3d projV = normal.project(p.minus(anchor));
 
@@ -168,32 +170,49 @@ public class Plane {
 
         return projP;
     }
-    
+
     /**
      * Returns the shortest distance between the specified point and this plane.
+     *
      * @param p point
      * @return the shortest distance between the specified point and this plane
      */
     public double distance(Vector3d p) {
         return p.minus(project(p)).magnitude();
     }
+
+    /**
+     * Determines whether the specified point is in front of, in back of or on
+     * this plane.
+     *
+     * @param p point to check
+     * @param TOL tolerance
+     * @return {@code 1}, if p is in front of the plane, {@code -1}, if the
+     * point is in the back of this plane and {@code 0} if the point is on this
+     * plane
+     */
+    public int compare(Vector3d p, double TOL) {
+
+        // angle between vector n and vector (p-anchor)
+        double t = this.normal.dot(p.minus(anchor));
+        return (t < -TOL) ? -1 : (t > TOL) ? 1 : 0;
+    }
     
     /**
      * Determines whether the specified point is in front of, in back of or on
      * this plane.
+     *
      * @param p point to check
-     * @param EPS tolerance
-     * @return {@code 1}, if p is in front of the plane,
-     *         {@code -1}, if the point is in the back of this plane and
-     *         {@code 0} if the point is on this plane
+     * 
+     * @return {@code 1}, if p is in front of the plane, {@code -1}, if the
+     * point is in the back of this plane and {@code 0} if the point is on this
+     * plane
      */
-    public int compare(Vector3d p, double EPS) {
-        
+    public int compare(Vector3d p) {
+
         // angle between vector n and vector (p-anchor)
-        double t = this.normal.dot(p.minus(anchor)); 
-        return (t < -EPS) ? -1 : (t > EPS) ? 1 : 0;
-    } 
+        double t = this.normal.dot(p.minus(anchor));
+        return (t < -TOL) ? -1 : (t > TOL) ? 1 : 0;
+    }
 
 }
-
-

@@ -32,76 +32,51 @@
  * authors and should not be interpreted as representing official policies, either expressed
  * or implied, of Michael Hoffer <info@michaelhoffer.de>.
  */
-
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package eu.mihosoft.vvecmath;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import static java.lang.Math.abs;
 
 /**
- * 3d Spline.
+ * Internal utility class.
  * 
- * @author Michael Hoffer (info@michaelhoffer.de)
+ * @author Michael Hoffer <info@michaelhoffer.de>
  */
-public final class Spline3D extends Spline {
-
-    private final List<Vector3d> points;
-
-    private final List<Cubic> xCubics;
-    private final List<Cubic> yCubics;
-    private final List<Cubic> zCubics;
-
-    /**
-     * Creates a new spline.
-     */
-    public Spline3D() {
-        this.points = new ArrayList<>();
-
-        this.xCubics = new ArrayList<>();
-        this.yCubics = new ArrayList<>();
-        this.zCubics = new ArrayList<>();
-
+class VectorUtilInternal {
+    
+    public static String toString(Vector3d v) {
+        return "[" + v.x() + ", " + v.y() + ", " + v.z() + "]";
     }
 
-    /**
-     * Adds a control point to this spline.
-     * @param point point to add
-     */
-    public void addPoint(Vector3d point) {
-        this.points.add(point);
+    public static boolean equals(Vector3d thisV, Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (thisV.getClass() != obj.getClass()) {
+            return false;
+        }
+        final Vector3d other = (Vector3d) obj;
+        if (abs(thisV.x() - other.x()) > Plane.TOL) {
+            return false;
+        }
+        if (abs(thisV.y() - other.y()) > Plane.TOL) {
+            return false;
+        }
+        if (abs(thisV.z() - other.z()) > Plane.TOL) {
+            return false;
+        }
+        return true;
     }
 
-    /**
-     * Returns all control points.
-     * @return control points
-     */
-    public List<Vector3d> getPoints() {
-        return points;
-    }
-
-    /**
-     * Calculates this spline.
-     */
-    public void calcSpline() {
-        calcNaturalCubic(points, 0, xCubics);
-        calcNaturalCubic(points, 1, yCubics);
-        calcNaturalCubic(points, 2, zCubics);
-    }
-
-    /**
-     * Returns a point on the spline curve.
-     * @param position position on the curve, range {@code [0, 1)}
-     * 
-     * @return a point on the spline curve
-     */
-    public Vector3d getPoint(double position) {
-        position = position * xCubics.size();
-        int cubicNum = (int) position;
-        double cubicPos = (position - cubicNum);
-
-        return Vector3d.xyz(xCubics.get(cubicNum).eval(cubicPos),
-                yCubics.get(cubicNum).eval(cubicPos),
-                zCubics.get(cubicNum).eval(cubicPos));
-    }
+    public static int getHashCode(Vector3d v) {
+        int hash = 7;
+        hash = 67 * hash + (int) (Double.doubleToLongBits(v.x()) ^ (Double.doubleToLongBits(v.x()) >>> 32));
+        hash = 67 * hash + (int) (Double.doubleToLongBits(v.y()) ^ (Double.doubleToLongBits(v.y()) >>> 32));
+        hash = 67 * hash + (int) (Double.doubleToLongBits(v.z()) ^ (Double.doubleToLongBits(v.z()) >>> 32));
+        return hash;
+    }    
 }

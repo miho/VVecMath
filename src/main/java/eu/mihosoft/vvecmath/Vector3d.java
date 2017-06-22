@@ -34,18 +34,40 @@
  */
 package eu.mihosoft.vvecmath;
 
+import static java.lang.Math.acos;
+import static java.lang.Math.max;
+import static java.lang.Math.min;
+import java.util.Random;
+
 /**
  *
- * Immutable 3d vector.
- *
- * @author Michael Hoffer (info@michaelhoffer.de)
+ * @author Michael Hoffer &lt;info@michaelhoffer.de&gt;
  */
 public interface Vector3d {
 
+    /**
+     * Unity vector {@code (1, 1, 1)}.
+     */
     Vector3d UNITY = new Vector3dImpl(1, 1, 1);
+
+    /**
+     * Vector {@code (1, 0, 0)}.
+     */
     Vector3d X_ONE = new Vector3dImpl(1, 0, 0);
+
+    /**
+     * Vector {@code (0, 1, 0)}.
+     */
     Vector3d Y_ONE = new Vector3dImpl(0, 1, 0);
+
+    /**
+     * Vector {@code (0, 0, 0)}.
+     */
     Vector3d ZERO = new Vector3dImpl(0, 0, 0);
+
+    /**
+     * Vector {@code (0, 0, 1)}.
+     */
     Vector3d Z_ONE = new Vector3dImpl(0, 0, 1);
 
     /**
@@ -54,72 +76,20 @@ public interface Vector3d {
      * @param v vector
      * @return angle in degrees
      */
-    double angle(Vector3d v);
+    default double angle(Vector3d v) {
+        double val = this.dot(v) / (this.magnitude() * v.magnitude());
+        return acos(max(min(val, 1), -1)) * 180.0 / Math.PI; // compensate rounding errors
+    }
 
     /**
-     * Returns a modifiable copy of this vector.
+     * Returns the distance between the specified point and this point.
      *
-     * @return a modifiable copy of this vector
+     * @param p point
+     * @return the distance between the specified point and this point
      */
-    ModifiableVector3d asModifiable();
-
-    /**
-     * Returns a clone of this vector.
-     *
-     * @return a clone of this vector
-     */
-    Vector3d clone();
-
-    /**
-     * Returns the cross product of this vector and the specified vector.
-     *
-     * <b>Note:</b> this vector is not modified.
-     *
-     * @param a the vector
-     *
-     * @return the cross product of this vector and the specified vector.
-     */
-    Vector3d cross(Vector3d a);
-
-    /**
-     * Returns this vector devided by the specified value.
-     *
-     * @param a the value
-     *
-     * <b>Note:</b> this vector is not modified.
-     *
-     * @return this vector devided by the specified value
-     */
-    Vector3d dividedBy(double a);
-
-    /**
-     * Returns the dot product of this vector and the specified vector.
-     *
-     * <b>Note:</b> this vector is not modified.
-     *
-     * @param a the second vector
-     *
-     * @return the dot product of this vector and the specified vector
-     */
-    double dot(Vector3d a);
-
-    @Override
-    boolean equals(Object obj);
-
-    /**
-     * Returns the components {code x,y,z} as double array.
-     *
-     * @return the components {code x,y,z} as double array
-     */
-    double[] get();
-
-    /**
-     * Returns the i-th component of this vector.
-     *
-     * @param i component index
-     * @return the i-th component of this vector
-     */
-    double get(int i);
+    default double distance(Vector3d p) {
+        return minus(p).magnitude();
+    }
 
     /**
      * Returns the {@code x} component of this vector.
@@ -142,8 +112,149 @@ public interface Vector3d {
      */
     double getZ();
 
-    @Override
-    int hashCode();
+    /**
+     * Returns the components {code x,y,z} as double array.
+     *
+     * @return the components {code x,y,z} as double array
+     */
+    default double[] get() {
+        return new double[]{x(), y(), z()};
+    }
+
+    /**
+     * Returns the i-th component of this vector.
+     *
+     * @param i component index
+     * @return the i-th component of this vector
+     */
+    default double get(int i) {
+        switch (i) {
+            case 0:
+                return x();
+            case 1:
+                return y();
+            case 2:
+                return z();
+            default:
+                throw new RuntimeException("Illegal index: " + i);
+        }
+    }
+
+    /**
+     * Returns the x component of this vector
+     *
+     * @return x component of this vector
+     */
+    default double x() {
+        return getX();
+    }
+
+    /**
+     * Returns the y component of this vector
+     *
+     * @return y component of this vector
+     */
+    default double y() {
+        return getY();
+    }
+
+    /**
+     * Returns the z component of this vector
+     *
+     * @return z component of this vector
+     */
+    default double z() {
+        return getZ();
+    }
+
+    /**
+     * Returns a negated copy of this vector.
+     *
+     * <b>Note:</b> this vector is not modified.
+     *
+     * @return a negated copy of this vector
+     */
+    default Vector3d negated() {
+        return new Vector3dImpl(-x(), -y(), -z());
+    }
+
+    /**
+     * Returns the sum of this vector and the specified vector.
+     *
+     * @param v the vector to add
+     *
+     * <b>Note:</b> this vector is not modified.
+     *
+     * @return the sum of this vector and the specified vector
+     */
+    default Vector3d plus(Vector3d v) {
+        return new Vector3dImpl(x() + v.x(), y() + v.y(), z() + v.z());
+    }
+
+    /**
+     * Returns the difference of this vector and the specified vector.
+     *
+     * @param v the vector to subtract
+     *
+     * <b>Note:</b> this vector is not modified.
+     *
+     * @return the difference of this vector and the specified vector
+     */
+    default Vector3d minus(Vector3d v) {
+        return new Vector3dImpl(x() - v.x(), y() - v.y(), z() - v.z());
+    }
+
+    /**
+     * Returns the product of this vector and the specified value.
+     *
+     * @param a the value
+     *
+     * <b>Note:</b> this vector is not modified.
+     *
+     * @return the product of this vector and the specified value
+     */
+    default Vector3d times(double a) {
+        return new Vector3dImpl(x() * a, y() * a, z() * a);
+    }
+
+    /**
+     * Returns the product of this vector and the specified vector.
+     *
+     * @param a the vector
+     *
+     * <b>Note:</b> this vector is not modified.
+     *
+     * @return the product of this vector and the specified vector
+     */
+    default Vector3d times(Vector3d a) {
+        return new Vector3dImpl(x() * a.x(), y() * a.y(), z() * a.z());
+    }
+
+    /**
+     * Returns this vector divided by the specified value.
+     *
+     * @param a the value
+     *
+     * <b>Note:</b> this vector is not modified.
+     *
+     * @return this vector divided by the specified value
+     */
+    default Vector3d divided(double a) {
+        return new Vector3dImpl(x() / a, y() / a, z() / a);
+    }
+
+    /**
+     * Returns the dot product of this vector and the specified vector.
+     *
+     * <b>Note:</b> this vector is not modified.
+     *
+     * @param a the second vector
+     *
+     * @return the dot product of this vector and the specified vector
+     */
+    default double dot(Vector3d a) {
+        return this.x() * a.x() + this.y() * a.y() + this.z() * a.z();
+    }
 
     /**
      * Linearly interpolates between this and the specified vector.
@@ -156,7 +267,9 @@ public interface Vector3d {
      * @return copy of this vector if {@code t = 0}; copy of a if {@code t = 1};
      * the point midway between this and the specified vector if {@code t = 0.5}
      */
-    Vector3d lerp(Vector3d a, double t);
+    default Vector3d lerp(Vector3d a, double t) {
+        return this.plus(a.minus(this).times(t));
+    }
 
     /**
      * Returns the magnitude of this vector.
@@ -165,7 +278,9 @@ public interface Vector3d {
      *
      * @return the magnitude of this vector
      */
-    double magnitude();
+    default double magnitude() {
+        return Math.sqrt(this.dot(this));
+    }
 
     /**
      * Returns the squared magnitude of this vector
@@ -180,102 +295,41 @@ public interface Vector3d {
     }
 
     /**
-     * Returns the difference of this vector and the specified vector.
-     *
-     * @param v the vector to subtract
-     *
-     * <b>Note:</b> this vector is not modified.
-     *
-     * @return the difference of this vector and the specified vector
-     */
-    Vector3d minus(Vector3d v);
-
-    /**
-     * Returns a negated copy of this vector.
-     *
-     * <b>Note:</b> this vector is not modified.
-     *
-     * @return a negated copy of this vector
-     */
-    Vector3d negated();
-
-    /**
      * Returns a normalized copy of this vector with length {@code 1}.
      *
      * <b>Note:</b> this vector is not modified.
      *
      * @return a normalized copy of this vector with length {@code 1}
      */
-    Vector3d normalized();
+    default Vector3d normalized() {
+        return this.divided(this.magnitude());
+    }
 
     /**
-     * Creates a new vector which is orthogonal to this vector.
-     *
-     * <pre>this_i , this_j , this_k => i,j,k € {1,2,3}</pre> permutation
-     *
-     * <b> Remark:</b> looking for orthogonal vector o to vector this:
-     *
-     * <pre>this_i * o_i + this_j * o_j + this_k * o_k = 0</pre>
-     *
-     * @author C. Poliwoda
-     * @return a new vector which is orthogonal to this vector
-     */
-    Vector3d orthogonal();
-
-    /**
-     * Returns the sum of this vector and the specified vector.
-     *
-     * @param v the vector to add
+     * Returns the cross product of this vector and the specified vector.
      *
      * <b>Note:</b> this vector is not modified.
-     *
-     * @return the sum of this vector and the specified vector
-     */
-    Vector3d plus(Vector3d v);
-
-    /**
-     * Returns the product of this vector and the specified value.
-     *
-     * @param a the value
-     *
-     * <b>Note:</b> this vector is not modified.
-     *
-     * @return the product of this vector and the specified value
-     */
-    Vector3d times(double a);
-
-    /**
-     * Returns the product of this vector and the specified vector.
      *
      * @param a the vector
      *
-     * <b>Note:</b> this vector is not modified.
-     *
-     * @return the product of this vector and the specified vector
+     * @return the cross product of this vector and the specified vector.
      */
-    Vector3d times(Vector3d a);
-
-    /**
-     * Returns this vector in OBJ string format.
-     *
-     * @return this vector in OBJ string format
-     */
-    String toObjString();
-
-    /**
-     * Returns this vector in OBJ string format.
-     *
-     * @param sb string builder
-     * @return the specified string builder
-     */
-    StringBuilder toObjString(StringBuilder sb);
+    default Vector3d crossed(Vector3d a) {
+        return new Vector3dImpl(
+                this.y() * a.z() - this.z() * a.y(),
+                this.z() * a.x() - this.x() * a.z(),
+                this.x() * a.y() - this.y() * a.x()
+        );
+    }
 
     /**
      * Returns this vector in STL string format.
      *
      * @return this vector in STL string format
      */
-    String toStlString();
+    default String toStlString() {
+        return toStlString(new StringBuilder()).toString();
+    }
 
     /**
      * Returns this vector in STL string format.
@@ -283,10 +337,191 @@ public interface Vector3d {
      * @param sb string builder
      * @return the specified string builder
      */
-    StringBuilder toStlString(StringBuilder sb);
+    default StringBuilder toStlString(StringBuilder sb) {
+        return sb.append(this.x()).append(" ").
+                append(this.y()).append(" ").
+                append(this.z());
+    }
 
-    @Override
-    String toString();
+    /**
+     * Returns this vector in OBJ string format.
+     *
+     * @return this vector in OBJ string format
+     */
+    default String toObjString() {
+        return toObjString(new StringBuilder()).toString();
+    }
+
+    /**
+     * Returns this vector in OBJ string format.
+     *
+     * @param sb string builder
+     * @return the specified string builder
+     */
+    default StringBuilder toObjString(StringBuilder sb) {
+        return sb.append(this.x()).append(" ").
+                append(this.y()).append(" ").
+                append(this.z());
+    }
+
+    /**
+     * Returns a transformed copy of this vector.
+     *
+     * @param transform the transform to apply
+     *
+     * <b>Note:</b> this vector is not modified.
+     * 
+     * @param amount 
+     *
+     * @return a transformed copy of this vector
+     */
+    default Vector3d transformed(Transform transform, double amount) {
+        return transform.transform(this.asModifiable(), amount);
+    }
+
+    /**
+     * Creates a new vector which is orthogonal to this.
+     *
+     * this_i , this_j , this_k => i,j,k € {1,2,3} permutation
+     *
+     * looking for orthogonal vector o to vector this: this_i * o_i + this_j *
+     * o_j + this_k * o_k = 0
+     *
+     * @return a new vector which is orthogonal to this
+     */
+    default Vector3d orthogonal() {
+
+//        if ((this.x == Double.NaN) || (this.y == Double.NaN) || (this.z == Double.NaN)) {
+//            throw new IllegalStateException("NaN is not a valid entry for a vector.");
+//        }
+        double o1 = 0.0;
+        double o2 = 0.0;
+        double o3 = 0.0;
+
+        Random r = new Random();
+
+        int numberOfZeroEntries = 0;
+
+        if (this.x() == 0) {
+            numberOfZeroEntries++;
+            o1 = r.nextDouble();
+        }
+
+        if (this.y() == 0) {
+            numberOfZeroEntries++;
+            o2 = r.nextDouble();
+        }
+
+        if (this.z() == 0) {
+            numberOfZeroEntries++;
+            o3 = r.nextDouble();
+        }
+
+        switch (numberOfZeroEntries) {
+
+            case 0:
+                // all this_i != 0
+                //
+                //we do not want o3 to be zero
+                while (o3 == 0) {
+                    o3 = r.nextDouble();
+                }
+
+                //we do not want o2 to be zero
+                while (o2 == 0) {
+                    o2 = r.nextDouble();
+                }
+                // calculate or choose randomly ??
+//                o2 = -this.z * o3 / this.y;
+
+                o1 = (-this.y() * o2 - this.z() * o3) / this.x();
+
+                break;
+
+            case 1:
+                // this_i = 0 , i € {1,2,3}
+                // this_j != 0 != this_k , j,k € {1,2,3}\{i}
+                // 
+                // choose one none zero randomly and calculate the other one
+
+                if (this.x() == 0) {
+                    //we do not want o3 to be zero
+                    while (o3 == 0) {
+                        o3 = r.nextDouble();
+                    }
+
+                    o2 = -this.z() * o3 / this.y();
+
+                } else if (this.y() == 0) {
+
+                    //we do not want o3 to be zero
+                    while (o3 == 0) {
+                        o3 = r.nextDouble();
+                    }
+
+                    o1 = -this.z() * o3 / this.x();
+
+                } else if (this.z() == 0) {
+
+                    //we do not want o1 to be zero
+                    while (o1 == 0) {
+                        o1 = r.nextDouble();
+                    }
+
+                    o2 = -this.z() * o1 / this.y();
+                }
+
+                break;
+
+            case 2:
+                // if two parts of this are 0 we can achieve orthogonality
+                // via setting the corressponding part of the orthogonal vector
+                // to zero this is ALREADY DONE in the init (o_i = 0.0)
+                // NO CODE NEEDED
+//                if (this.x == 0) {
+//                    o1 = 0;
+//                } else if (this.y == 0) {
+//                    o2 = 0;
+//                } else if (this.z == 0) {
+//                    o3 = 0;
+//                }
+                break;
+
+            case 3:
+                System.err.println("This vector is equal to (0,0,0). ");
+
+            default:
+                System.err.println("The orthogonal one is set randomly.");
+
+                o1 = r.nextDouble();
+                o2 = r.nextDouble();
+                o3 = r.nextDouble();
+        }
+
+        Vector3d result = new Vector3dImpl(o1, o2, o3);
+
+//        if ((this.x ==Double.NaN) || (this.y == Double.NaN) || (this.z == Double.NaN)) {
+//            throw new IllegalStateException("NaN is not a valid entry for a vector.");
+//        }
+//        System.out.println(" this : "+ this);
+//        System.out.println(" result : "+ result);
+        // check if the created vector is really orthogonal to this
+        // if not try one more time
+        while (this.dot(result) != 0.0) {
+            result = this.orthogonal();
+        }
+
+        return result;
+    }
+
+    /**
+     * Returns a modifiable copy of this vector.
+     *
+     * @return a modifiable copy of this vector
+     */
+    default ModifiableVector3d asModifiable() {
+        return new ModifiableVector3dImpl(this.x(), this.y(), this.z());
+    }
 
     /**
      * Returns a transformed copy of this vector.
@@ -297,39 +532,54 @@ public interface Vector3d {
      *
      * @return a transformed copy of this vector
      */
-    Vector3d transformed(Transform transform);
+    default Vector3d transformed(Transform transform) {
+        return transform.transform(this.asModifiable());
+    }
 
     /**
-     * Returns a transformed copy of this vector.
+     * Returns the sum of this vector and the specified vector.
      *
-     *
+     * @param x x coordinate of the vector to add
+     * @param y y coordinate of the vector to add
+     * @param z z coordinate of the vector to add
      *
      * <b>Note:</b> this vector is not modified.
      *
-     * @param transform the transform to apply
-     * @param amount amount to which the transform shall be applied ()range:
-     * {@code [0, 1]}
-     * @return a transformed copy of this vector
+     * @return the sum of this vector and the specified vector
      */
-    Vector3d transformed(Transform transform, double amount);
+    default Vector3d plus(double x, double y, double z) {
+        return Vector3d.xyz(this.x() + x, this.y() + y, this.z() + z);
+    }
 
     /**
-     * Returns the x component of this vector
-     * @return x component of this vector
+     * Returns the difference of this vector and the specified vector.
+     *
+     * @param x x coordinate of the vector to subtract
+     * @param y y coordinate of the vector to subtract
+     * @param z z coordinate of the vector to subtract
+     *
+     * <b>Note:</b> this vector is not modified.
+     *
+     * @return the difference of this vector and the specified vector
      */
-    double x();
+    default Vector3d minus(double x, double y, double z) {
+        return Vector3d.xyz(this.x() - x, this.y() - y, this.z() - z);
+    }
 
     /**
-     * Returns the y component of this vector
-     * @return y component of this vector
+     * Returns the product of this vector and the specified vector.
+     *
+     * @param x x coordinate of the vector to multiply
+     * @param y y coordinate of the vector to multiply
+     * @param z z coordinate of the vector to multiply
+     *
+     * <b>Note:</b> this vector is not modified.
+     *
+     * @return the product of this vector and the specified vector
      */
-    double y();
-
-    /**
-     * Returns the z component of this vector
-     * @return z component of this vector
-     */
-    double z();
+    default Vector3d times(double x, double y, double z) {
+        return Vector3d.xyz(this.x() * x, this.y() * y, this.z() * z);
+    }
 
     /**
      * Creates a new vector with specified {@code x}
@@ -428,6 +678,15 @@ public interface Vector3d {
         return new Vector3dImpl(0, 0, 0);
     }
 
+
+    /**
+     * Returns a clone of this vector.
+     *
+     * @return a clone of this vector
+     */
+    Vector3d clone();
+
+
     /**
      * Clones the specified vector.
      *
@@ -437,16 +696,18 @@ public interface Vector3d {
     public static Vector3d clone(Vector3d source) {
         return new Vector3dImpl(source.x(), source.y(), source.z());
     }
-    
+
     /**
      * Projects the specified vector onto this vector.
+     *
      * @param v vector to project onto this vector
      * @return the projection of the specified vector onto this vector
      */
     public default Vector3d project(Vector3d v) {
 
-            double pScale = v.dot(this)/ this.magnitudeSq();
-            
-            return this.times(pScale);
+        double pScale = v.dot(this) / this.magnitudeSq();
+
+        return this.times(pScale);
     }
+
 }

@@ -182,7 +182,7 @@ public class Transform {
         Vector3d a = from.normalized();
         Vector3d b = to.normalized();
 
-        Vector3d c = a.cross(b);
+        Vector3d c = a.crossed(b);
 
         double l = c.magnitude(); // sine of angle
 
@@ -198,9 +198,7 @@ public class Transform {
     }
 
     /**
-     * Applies a rotation operation with a specified rotation axis.
-     *
-     * <b> Note:</b> untested.
+     * Applies a rotation operation about the specified rotation axis.
      *
      * @param axisPos axis point
      * @param axisDir axis direction (may be unnormalized)

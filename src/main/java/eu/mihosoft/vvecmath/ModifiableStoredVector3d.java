@@ -32,76 +32,58 @@
  * authors and should not be interpreted as representing official policies, either expressed
  * or implied, of Michael Hoffer <info@michaelhoffer.de>.
  */
-
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package eu.mihosoft.vvecmath;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import static eu.mihosoft.vvecmath.StoredVector3d.getStructSize;
 
 /**
- * 3d Spline.
- * 
- * @author Michael Hoffer (info@michaelhoffer.de)
+ * A modifiable 3d vector that is stored in an external double array.
+ *
+ * @author Michael Hoffer <info@michaelhoffer.de>
  */
-public final class Spline3D extends Spline {
-
-    private final List<Vector3d> points;
-
-    private final List<Cubic> xCubics;
-    private final List<Cubic> yCubics;
-    private final List<Cubic> zCubics;
+public interface ModifiableStoredVector3d
+        extends StoredVector3d, ModifiableVector3d {
 
     /**
-     * Creates a new spline.
+     * Creates a new stored vector from the specified double array.
+     *
+     * @param storage double array used to store the vector
+     * @param offset the storage offset used by the vector
+     * @param stride the stride used to store the vector elements (x,y,z)
+     * @return a new stored vector from the specified double array
      */
-    public Spline3D() {
-        this.points = new ArrayList<>();
-
-        this.xCubics = new ArrayList<>();
-        this.yCubics = new ArrayList<>();
-        this.zCubics = new ArrayList<>();
-
+    static ModifiableStoredVector3d from(double[] storage, int offset, int stride) {
+        StoredVector3dImpl result = new StoredVector3dImpl();
+        result.setStorage(storage);
+        result.setOffset(offset);
+        result.setStride(stride);
+        return result;
     }
 
     /**
-     * Adds a control point to this spline.
-     * @param point point to add
+     * Creates a new modifiable stored vector from the specified double array.
+     *
+     * @param storage double array used to store the vector
+     * @param offset the storage offset used by the vector
+     * @return a new stored vector from the specified double array
      */
-    public void addPoint(Vector3d point) {
-        this.points.add(point);
+    static ModifiableStoredVector3d from(double[] storage, int offset) {
+        return from(storage, offset, getStructSize());
     }
 
     /**
-     * Returns all control points.
-     * @return control points
+     * Creates a new modifiable stored vector from the specified double array.
+     *
+     * @param storage double array used to store the vector
+     * @param v the vector who's storage offset and stride shall be used
+     * @return a new stored vector from the specified double array
      */
-    public List<Vector3d> getPoints() {
-        return points;
-    }
-
-    /**
-     * Calculates this spline.
-     */
-    public void calcSpline() {
-        calcNaturalCubic(points, 0, xCubics);
-        calcNaturalCubic(points, 1, yCubics);
-        calcNaturalCubic(points, 2, zCubics);
-    }
-
-    /**
-     * Returns a point on the spline curve.
-     * @param position position on the curve, range {@code [0, 1)}
-     * 
-     * @return a point on the spline curve
-     */
-    public Vector3d getPoint(double position) {
-        position = position * xCubics.size();
-        int cubicNum = (int) position;
-        double cubicPos = (position - cubicNum);
-
-        return Vector3d.xyz(xCubics.get(cubicNum).eval(cubicPos),
-                yCubics.get(cubicNum).eval(cubicPos),
-                zCubics.get(cubicNum).eval(cubicPos));
+    static ModifiableStoredVector3d from(double[] storage, StoredVector3d v) {
+        return from(storage, v.getOffset(), v.getStride());
     }
 }
