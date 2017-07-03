@@ -231,6 +231,59 @@ public interface Vector3d {
     }
 
     /**
+     * Returns the sum of this vector and the specified vector.
+     *
+     * @param v the vector to add
+     *
+     * <b>Note:</b> this vector is not modified.
+     *
+     * @return the sum of this vector and the specified vector
+     */
+    default Vector3d added(Vector3d v) {
+        return new Vector3dImpl(x() + v.x(), y() + v.y(), z() + v.z());
+    }
+
+    /**
+     * Returns the difference of this vector and the specified vector.
+     *
+     * @param v the vector to subtract
+     *
+     * <b>Note:</b> this vector is not modified.
+     *
+     * @return the difference of this vector and the specified vector
+     */
+    default Vector3d subtracted(Vector3d v) {
+        return new Vector3dImpl(x() - v.x(), y() - v.y(), z() - v.z());
+    }
+
+    /**
+     * Returns the product of this vector and the specified value.
+     *
+     * @param a the value
+     *
+     * <b>Note:</b> this vector is not modified.
+     *
+     * @return the product of this vector and the specified value
+     */
+    default Vector3d multiplied(double a) {
+        return new Vector3dImpl(x() * a, y() * a, z() * a);
+    }
+
+    /**
+     * Returns the product of this vector and the specified vector.
+     *
+     * @param a the vector
+     *
+     * <b>Note:</b> this vector is not modified.
+     *
+     * @return the product of this vector and the specified vector
+     */
+    default Vector3d multiplied(Vector3d a) {
+        return new Vector3dImpl(x() * a.x(), y() * a.y(), z() * a.z());
+    }
+
+
+    /**
      * Returns this vector divided by the specified value.
      *
      * @param a the value
