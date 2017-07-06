@@ -516,7 +516,7 @@ public class Transform {
         result.setX(x);
         result.setY(y);
 
-        return vec;
+        return result;
     }
 
     /**
