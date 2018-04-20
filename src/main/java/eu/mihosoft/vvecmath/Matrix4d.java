@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Michael Hoffer <info@michaelhoffer.de>. All rights reserved.
+ * Copyright 2017-2018 Michael Hoffer <info@michaelhoffer.de>. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification, are
  * permitted provided that the following conditions are met:
@@ -32,7 +32,6 @@
  * authors and should not be interpreted as representing official policies, either expressed
  * or implied, of Michael Hoffer <info@michaelhoffer.de>.
  */
-
 package eu.mihosoft.vvecmath;
 
 /**
@@ -64,37 +63,81 @@ class Matrix4d {
     public Matrix4d(double[] v) {
 
         this.m00 = v[0];
-
         this.m01 = v[1];
-
         this.m02 = v[2];
-
         this.m03 = v[3];
 
         this.m10 = v[4];
-
         this.m11 = v[5];
-
         this.m12 = v[6];
-
         this.m13 = v[7];
 
         this.m20 = v[8];
-
         this.m21 = v[9];
-
         this.m22 = v[10];
-
         this.m23 = v[11];
 
         this.m30 = v[12];
-
         this.m31 = v[13];
-
         this.m32 = v[14];
-
         this.m33 = v[15];
 
+    }
+
+    public void set(double[] values) {
+
+        if(values == null || values.length == 0) {
+            values = new double[16];
+        }
+
+        this.m00 = values[0];
+        this.m01 = values[1];
+        this.m02 = values[2];
+        this.m03 = values[3];
+
+        this.m10 = values[4];
+        this.m11 = values[5];
+        this.m12 = values[6];
+        this.m13 = values[7];
+
+        this.m20 = values[8];
+        this.m21 = values[9];
+        this.m22 = values[10];
+        this.m23 = values[11];
+
+        this.m30 = values[12];
+        this.m31 = values[13];
+        this.m32 = values[14];
+        this.m33 = values[15];
+    }
+
+    public double[] get(double... values) {
+
+        if(values == null || values.length == 0) {
+            values = new double[16];
+        }
+
+        values[0] = this.m00;
+        values[1] = this.m01;
+        values[2] = this.m02;
+        values[3] = this.m03;
+
+        values[4] = this.m10;
+        values[5] = this.m11;
+        values[6] = this.m12;
+        values[7] = this.m13;
+
+        values[8] = this.m20;
+        values[9] = this.m21;
+        values[10] = this.m22;
+        values[11] = this.m23;
+
+        values[12] = this.m30;
+        values[13] = this.m31;
+        values[14] = this.m32;
+        values[15] = this.m33;
+
+        return values;
     }
 
     /**

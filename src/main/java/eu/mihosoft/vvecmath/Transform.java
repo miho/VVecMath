@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Michael Hoffer <info@michaelhoffer.de>. All rights reserved.
+ * Copyright 2017-2018 Michael Hoffer <info@michaelhoffer.de>. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification, are
  * permitted provided that the following conditions are met:
@@ -75,6 +75,36 @@ public class Transform {
     }
 
     /**
+     * Returns a new transform based on the specified matrix values (4x4).
+     *
+     * @param values 16 double values that represent the transformation matrix
+     * @return a new transform
+     */
+    public static Transform from(double... values) {
+        Matrix4d m = new Matrix4d(values);
+        return new Transform(m);
+    }
+
+    /**
+     * Returns this transform as matrix (4x4).
+     *
+     * @param values target array (16 values)
+     * @return a new transform
+     */
+    public double[] to(double[] values) {
+        return m.get(values);
+    }
+
+    /**
+     * Returns this transform as matrix (4x4).
+     *
+     * @return a new transform
+     */
+    public double[] to() {
+        return m.get(null);
+    }
+
+    /**
      * Returns a new unity transform.
      *
      * @return unity transform
@@ -103,7 +133,10 @@ public class Transform {
         double cos = Math.cos(radians);
         double sin = Math.sin(radians);
         double elemenents[] = {
-            1, 0, 0, 0, 0, cos, sin, 0, 0, -sin, cos, 0, 0, 0, 0, 1
+            1,   0,   0,  0,
+            0, cos, sin,  0,
+            0, -sin, cos, 0,
+            0,    0,   0, 1
         };
         m.mul(new Matrix4d(elemenents));
         return this;
