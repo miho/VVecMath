@@ -1,5 +1,5 @@
 # VVecMath
-[ ![Download](https://api.bintray.com/packages/miho/VVecMath/VVecMath/images/download.svg) ](https://bintray.com/miho/VVecMath/VVecMath/_latestVersion)
+[ ![Download](https://api.bintray.com/packages/miho/VVecMath/VVecMath/images/download.svg) ](https://bintray.com/miho/VVecMath/VVecMath/_latestVersion) [![Javadocs](https://www.javadoc.io/badge/eu.mihosoft.vvecmath/vvecmath.svg)](https://www.javadoc.io/doc/eu.mihosoft.vvecmath/vvecmath)
 
 Vector math package used by JCSG, VRL and VMF.
 
