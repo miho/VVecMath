@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2018 Michael Hoffer <info@michaelhoffer.de>. All rights reserved.
+ * Copyright 2017-2019 Michael Hoffer <info@michaelhoffer.de>. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification, are
  * permitted provided that the following conditions are met:
@@ -634,6 +634,76 @@ public interface Vector3d {
         double pScale = v.dot(this) / this.magnitudeSq();
 
         return this.times(pScale);
+    }
+
+    /**
+     * Indicates whether the two given points are collinear with this 
+     * vector/point. 
+     * 
+     * @param p2 second point
+     * @param p3 third point
+     * 
+     * @return {@code true} if all three points are collinear;
+     *         {@code false} otherwise
+     */
+     default boolean collinear(Vector3d p2, Vector3d p3) {  
+
+        // The points p1, p2, p3 are collinear (are on the same line segment)
+        // if and only if the largest of the lenghts of 
+        //
+        //   a = P1P2,
+        //   b = P1P2
+        //   c = P2P3
+        //
+        // is equal to the sum of the other two.
+        //
+        // Explanation: 
+        //
+        // If p1, p2 and p3 are on the same line then the point in the 'middle'
+        // cuts the line segment into two smaller pieces. That is the sum of the
+        // lengths of the smaller pieces is equal to the largest one.
+        //
+        // That is, the following expression determines whether the three points
+        // are collinear
+        //
+        //   boolean collinear = largest > (second + third)
+
+        double a = this.distance(p2);
+        double b = this.distance(p3);
+        double c = p2.distance(p3);
+
+        double largest;
+        double second;
+        double third;
+
+        if (a > b && a > c) {
+            // a is largest
+            largest = a;
+            second = b;
+            third = c;
+        } else if (b > a && b > c) {
+            // b is largest
+            largest = b;
+            second = a;
+            third = c;
+        } else if (c > a && c > b) {
+            // c is largest
+            largest = c;
+            second = a;
+            third = b;
+        } else {
+            // lengths are not distinct.
+            //
+            // there are two possibilities:
+            //
+            //   a: they are vertices of a equilateral triangle   -> false
+            //   b: they are zero, i.e., all points are identical -> true
+            //
+            return a == 0 && b == 0 && c == 0;
+        }
+
+        return Math.abs(largest  - (second + third)) < Plane.TOL;
+
     }
 
 }

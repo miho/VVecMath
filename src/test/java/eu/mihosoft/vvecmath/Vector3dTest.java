@@ -32,85 +32,43 @@
  * authors and should not be interpreted as representing official policies, either expressed
  * or implied, of Michael Hoffer <info@michaelhoffer.de>.
  */
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package eu.mihosoft.vvecmath;
 
-/**
- * 
- * @author Michael Hoffer <info@michaelhoffer.de>
- */
-public class StoredVector3dImpl implements ModifiableStoredVector3d {
-    
-    private double[] storage;
-    private int offset;
-    private int stride = 3;
+import org.junit.Test;
 
-    @Override
-    public void setStorage(double[] storage) {
-        this.storage = storage;
-    }
+import junit.framework.Assert;
 
-    @Override
-    public void setOffset(int offset) {
-        this.offset = offset;
-    }
+public class Vector3dTest {
 
-    @Override
-    public void setStride(int stride) {
-        this.stride = stride;
-    }
+    @Test
+    public void collinearityTest() {
+        {
+            Vector3d p1 = Vector3d.xyz(1,1,1);
+            Vector3d p2 = p1.times(5);
+            Vector3d p3 = p1.times(10);
 
-    @Override
-    public Vector3d set(double... xyz) {
-        for (int i = 0; i < xyz.length; i++) {
-            set(i, xyz[i]);
+            Assert.assertTrue("p1, p2, p3 must be collinear", p1.collinear(p2, p3));
         }
-        
-        return this;
-    }
+        {
+            Vector3d p1 = Vector3d.xyz(1,1,1);
+            Vector3d p2 = p1.times(5,5,4);
+            Vector3d p3 = p1.times(10);
 
-    @Override
-    public Vector3d set(int i, double value) {
-        this.storage[offset*stride+i]=value;
-        return this;
-    }
+            Assert.assertTrue("p1, p2, p3 must not be collinear", !p1.collinear(p2, p3));
+        }
+        {
+            Vector3d p1 = Vector3d.xyz(10,10,10);
+            Vector3d p2 = Vector3d.xyz(-1,-1,-1);
+            Vector3d p3 = p1.times(5);
 
-    @Override
-    public double getX() {
-        return this.storage[offset*stride+0];
-    }
+            Assert.assertTrue("p1, p2, p3 must be collinear", p1.collinear(p2, p3));
+        }
+        {
+            Vector3d p1 = Vector3d.xyz(10,20,10);
+            Vector3d p2 = p1.clone();
+            Vector3d p3 = p2.clone();
 
-    @Override
-    public double getY() {
-        return this.storage[offset*stride+1];
+            Assert.assertTrue("p1, p2, p3 must be collinear", p1.collinear(p2, p3));
+        }
     }
-
-    @Override
-    public double getZ() {
-        return this.storage[offset*stride+1];
-    }
-
-    @Override
-    public Vector3d clone() {
-        StoredVector3dImpl result = new StoredVector3dImpl();
-        result.setStorage(storage);
-        result.setOffset(offset);
-        result.setStride(stride);
-        return result;
-    }
-
-    @Override
-    public int getOffset() {
-        return offset;
-    }
-
-    @Override
-    public int getStride() {
-        return stride;
-    }
-   
 }

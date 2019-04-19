@@ -4,3 +4,10 @@
 /.nb-gradle/
 VVecMath.iml
 
+/.classpath
+/.vscode
+/.project
+/.settings
+
+/bin
+
