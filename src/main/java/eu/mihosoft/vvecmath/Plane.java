@@ -87,17 +87,17 @@ public class Plane {
      * @return a plane
      */
     public static Plane fromPoints(Vector3d a, Vector3d b, Vector3d c) {
-        Vector3d n = b.minus(a).crossed(c.minus(a)).normalized();
+        Vector3d normal = b.minus(a).crossed(c.minus(a)).normalized();
 
-        Vector3d center = Vector3d.zero();
+        Vector3d anchor = Vector3d.zero();
 
-        center = center.plus(a);
-        center = center.plus(b);
-        center = center.plus(c);
+        anchor = anchor.plus(a);
+        anchor = anchor.plus(b);
+        anchor = anchor.plus(c);
 
-        center = center.times(1.0 / 3.0);
+        anchor = anchor.times(1.0 / 3.0);
 
-        return new Plane(n, center);
+        return new Plane(anchor, normal);
     }
 
     /**
