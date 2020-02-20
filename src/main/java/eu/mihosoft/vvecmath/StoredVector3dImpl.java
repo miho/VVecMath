@@ -91,7 +91,7 @@ public class StoredVector3dImpl implements ModifiableStoredVector3d {
 
     @Override
     public double getZ() {
-        return this.storage[offset*stride+1];
+        return this.storage[offset*stride+2];
     }
 
     @Override
