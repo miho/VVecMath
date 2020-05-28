@@ -34,31 +34,36 @@
  */
 package eu.mihosoft.vvecmath;
 
+import java.util.Random;
+
 import org.junit.Test;
 
-import junit.framework.Assert;
+import org.junit.Assert;
 
 public class Vector3dTest {
 
     private final double EPSILON = 1e-12;
-    private static final Random random = new Random();
+    private static final Random random;
+    
+    static {
+        long seed = System.currentTimeMillis();
+        System.out.println(">> Performing tests with seed " + seed);
+        random = new Random(seed);
+    }
 
-    private static Transform RandomRotation()
-    {
+    private static Transform RandomRotation() {
         return Transform.unity().rot(
             360.0 * random.nextDouble(),
             360.0 * random.nextDouble(),
             360.0 * random.nextDouble());
     }
 
-    private static Vector3d RandomVector()
-    {
+    private static Vector3d RandomVector() {
         return Vector3d.xyz(random.nextDouble(), random.nextDouble(), random.nextDouble());
     }
 
     @Test
-    public void getterTest()
-    {
+    public void getterTest() {
         double x = 100.0 * random.nextDouble();
         double y = 100.0 * random.nextDouble();
         double z = 100.0 * random.nextDouble();
@@ -99,8 +104,8 @@ public class Vector3dTest {
     }
 
     @Test
-    public void plusMinusAddedSubtractedTest()
-    {
+    public void plusMinusAddedSubtractedTest() {
+
         Transform randRot = RandomRotation();
         Transform angleTrans = Transform.unity().rotZ(180.0 * random.nextDouble());
 
@@ -135,8 +140,8 @@ public class Vector3dTest {
     }
 
     @Test
-    public void timesMultipliedDividedTest()
-    {
+    public void timesMultipliedDividedTest() {
+
         Transform randRot = RandomRotation();
         Transform angleTrans = Transform.unity().rotZ(180.0 * random.nextDouble());
         double alpha = 100.0 * random.nextDouble();
@@ -177,8 +182,7 @@ public class Vector3dTest {
     }
 
     @Test
-    public void dotTest()
-    {
+    public void dotTest() {
         Transform randRot = RandomRotation();
 
         Vector3d va = randRot.transform(Vector3d.X_ONE.times(100.0 * random.nextDouble()));
@@ -203,11 +207,9 @@ public class Vector3dTest {
     }
 
     @Test
-    public void crossedTest()
-    {
+    public void crossedTest() {
 
         Transform randRot = RandomRotation();
-
 
         double a = random.nextDouble();
         double b = random.nextDouble();
@@ -241,8 +243,8 @@ public class Vector3dTest {
     }
 
     @Test
-    public void magnitudeTest()
-    {
+    public void magnitudeTest() {
+
         Transform randRot = RandomRotation();
 
         double a = 100.0 * random.nextDouble();
@@ -258,8 +260,7 @@ public class Vector3dTest {
     }
 
     @Test
-    public void normalizedTest()
-    {
+    public void normalizedTest() {
         Transform randRot = RandomRotation();
 
         double a = 100.0 * random.nextDouble();
@@ -275,8 +276,7 @@ public class Vector3dTest {
     }
 
     @Test
-    public void negatedTest()
-    {
+    public void negatedTest() {
         Vector3d v = RandomVector().times(100.0);
         Vector3d n = v.negated();
 
@@ -291,8 +291,7 @@ public class Vector3dTest {
     }
 
     @Test
-    public void orthogonalTest()
-    {
+    public void orthogonalTest() {
         Transform randRot = RandomRotation();
 
         double a = 100.0 * random.nextDouble();
@@ -301,12 +300,10 @@ public class Vector3dTest {
 
         double delta = Math.abs(oa.dot(va));
         Assert.assertEquals(String.format("dotproduct of orthogonal vector diverges from zero! Delta:%f", delta), 0, oa.dot(va), EPSILON);
-
     }
 
     @Test
-    public void angleTest()
-    {
+    public void angleTest() {
         double angle = 180.0 * random.nextDouble();
         Transform angleTrans = Transform.unity().rotZ(angle);
         Transform randRot = RandomRotation();
@@ -328,8 +325,7 @@ public class Vector3dTest {
     }
 
     @Test
-    public void distanceTest()
-    {
+    public void distanceTest() {
         Transform randTrans = RandomRotation();
         double distance = 100.0*random.nextDouble();
         Vector3d d = randTrans.transform(Vector3d.X_ONE.times(distance));
@@ -341,13 +337,11 @@ public class Vector3dTest {
 
 
         Assert.assertEquals(String.format("calculated distance diverges from generated distance! Delta: %f", delta), distance, calcDistance, EPSILON);
-
-
     }
 
     @Test
-    public void lerpTest()
-    {
+    public void lerpTest() {
+
         double t = random.nextDouble();
         Vector3d va = RandomVector();
         Vector3d vb = RandomVector();
@@ -359,8 +353,8 @@ public class Vector3dTest {
     }
 
     @Test
-    public void projectTest()
-    {
+    public void projectTest() {
+
         Transform randRot = RandomRotation();
 
         double a = 100.0 * random.nextDouble();
