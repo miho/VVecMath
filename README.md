@@ -1,5 +1,6 @@
 # VVecMath
 [ ![Download](https://api.bintray.com/packages/miho/VVecMath/VVecMath/images/download.svg) ](https://bintray.com/miho/VVecMath/VVecMath/_latestVersion) [![Javadocs](https://www.javadoc.io/badge/eu.mihosoft.vvecmath/vvecmath.svg)](https://www.javadoc.io/doc/eu.mihosoft.vvecmath/vvecmath)
+![Java CI with Gradle](https://github.com/miho/VVecMath/workflows/Java%20CI%20with%20Gradle/badge.svg)
 
 Vector math package used by JCSG, VRL and VMF.
 
@@ -7,7 +8,7 @@ Vector math package used by JCSG, VRL and VMF.
 
 ### Requirements
 
-- Java >= 1.8
+- Java >= 1.8 (currently tested with Java 11)
 - Internet connection (dependencies are downloaded automatically)
 - IDE: [Gradle](http://www.gradle.org/) Plugin (not necessary for command line usage)
 
