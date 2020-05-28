@@ -47,7 +47,7 @@ public class StoredVector3dImpl implements ModifiableStoredVector3d {
     
     private double[] storage;
     private int offset;
-    private int stride = 3;
+    private int stride = 1;
 
     @Override
     public void setStorage(double[] storage) {
@@ -75,23 +75,23 @@ public class StoredVector3dImpl implements ModifiableStoredVector3d {
 
     @Override
     public Vector3d set(int i, double value) {
-        this.storage[offset*stride+i]=value;
+        this.storage[offset+stride*i]=value;
         return this;
     }
 
     @Override
     public double getX() {
-        return this.storage[offset*stride+0];
+        return this.storage[offset+stride*0];
     }
 
     @Override
     public double getY() {
-        return this.storage[offset*stride+1];
+        return this.storage[offset+stride*1];
     }
 
     @Override
     public double getZ() {
-        return this.storage[offset*stride+2];
+        return this.storage[offset+stride*2];
     }
 
     @Override

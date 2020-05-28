@@ -42,7 +42,7 @@ import org.junit.Assert;
 
 public class Vector3dTest {
 
-    private final double EPSILON = 1e-12;
+    static final double EPSILON = 1e-12;
     private static final Random random;
     
     static {

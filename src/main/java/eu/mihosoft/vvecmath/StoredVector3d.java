@@ -118,7 +118,7 @@ public interface StoredVector3d extends Vector3d {
      * @return a new stored vector from the specified double array
      */
     static StoredVector3d from(double[] storage, int offset) {
-        return from(storage, offset, getStructSize());
+        return from(storage, offset, 1);
     }
 
 }
