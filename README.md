@@ -1,6 +1,13 @@
 # VVecMath
-[ ![Download](https://api.bintray.com/packages/miho/VVecMath/VVecMath/images/download.svg) ](https://bintray.com/miho/VVecMath/VVecMath/_latestVersion) [![Javadocs](https://www.javadoc.io/badge/eu.mihosoft.vvecmath/vvecmath.svg)](https://www.javadoc.io/doc/eu.mihosoft.vvecmath/vvecmath)
+[![Javadocs](https://www.javadoc.io/badge/eu.mihosoft.vvecmath/vvecmath.svg)](https://www.javadoc.io/doc/eu.mihosoft.vvecmath/vvecmath)
 ![Java CI with Gradle](https://github.com/miho/VVecMath/workflows/Java%20CI%20with%20Gradle/badge.svg)
+<a href="https://foojay.io/today/works-with-openjdk">
+   <img align="right" 
+        src="https://github.com/foojayio/badges/raw/main/works_with_openjdk/Works-with-OpenJDK.png"   
+        width="100">
+</a>
+
+<br>
 
 Vector math package used by JCSG, VRL and VMF.
 
